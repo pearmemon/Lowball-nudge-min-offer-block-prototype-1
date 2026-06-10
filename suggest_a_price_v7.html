@@ -1,0 +1,445 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.scene{display:flex;gap:20px;padding:1.5rem 0;align-items:flex-start;flex-wrap:wrap}
+.panel{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);padding:1.25rem;width:236px;flex-shrink:0;font-size:13px}
+.panel h3{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-secondary);margin-bottom:10px;margin-top:18px}
+.panel h3:first-child{margin-top:0}
+.cg{margin-bottom:10px}
+.cg>label{display:block;font-size:12px;color:var(--color-text-secondary);margin-bottom:3px}
+.ck{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--color-text-primary);cursor:pointer;user-select:none}
+.fi input[type=number]{width:100%;font-size:13px}
+.fi input.ferr{border-color:var(--color-border-danger)}
+.ferrmsg{font-size:11px;color:var(--color-text-danger);margin-top:3px;line-height:1.4}
+.fhint{font-size:12px;color:var(--color-text-secondary);margin-top:3px}
+.slider-row{display:flex;align-items:center;gap:8px}
+.slider-row input[type=range]{flex:1}
+.slider-val{font-size:12px;font-weight:500;color:var(--color-text-primary);min-width:32px;text-align:right}
+.divider{height:0.5px;background:var(--color-border-tertiary);margin:14px 0}
+.info{font-size:12px;color:var(--color-text-secondary);line-height:1.8}
+.info strong{color:var(--color-text-primary);font-weight:500}
+.floored{font-size:11px;color:var(--color-text-warning)}
+.stlbl{font-size:11px;font-weight:500;padding:3px 8px;border-radius:var(--border-radius-md);display:inline-flex;align-items:center;gap:5px;margin-top:6px}
+.stok{background:var(--color-background-success);color:var(--color-text-success)}
+.stwarn{background:var(--color-background-warning);color:var(--color-text-warning)}
+.sterr{background:var(--color-background-danger);color:var(--color-text-danger)}
+.indent{padding-left:10px;border-left:2px solid var(--color-border-tertiary);margin-top:4px}
+.modal-wrap{flex:1;min-width:280px;max-width:390px;display:flex;flex-direction:column;gap:8px}
+.preview-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-secondary)}
+.modal{background:var(--color-background-primary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);width:100%;overflow:hidden}
+.mhead{display:flex;align-items:center;justify-content:space-between;padding:.875rem 1.25rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.mhead h2{font-size:15px;font-weight:500;color:var(--color-text-primary)}
+.mhead button{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:17px;line-height:1;padding:0;display:flex}
+.ubanner{background:var(--color-background-secondary);padding:9px 1.25rem;font-size:12px;color:var(--color-text-secondary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.ubanner strong{color:var(--color-text-primary)}
+.wbanner{padding:10px 1.25rem;display:flex;gap:8px;align-items:flex-start;font-size:13px;background:var(--color-background-warning);color:var(--color-text-warning);border-bottom:0.5px solid var(--color-border-tertiary)}
+.mbody{padding:1rem 1.25rem}
+.irow{display:flex;gap:10px;margin-bottom:1rem}
+.ithumb{width:64px;height:64px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--color-text-tertiary);font-size:26px;border:0.5px solid var(--color-border-tertiary)}
+.iname{font-size:13px;font-weight:500;color:var(--color-text-primary);line-height:1.4;margin-bottom:5px}
+.pricerow{font-size:12px;color:var(--color-text-secondary);display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.lp{font-weight:500;color:var(--color-text-primary)}
+.sp{color:var(--color-text-danger);font-weight:500}
+.ocard{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:11px 13px;margin-bottom:9px;cursor:pointer}
+.ocard.sel{border:1.5px solid var(--color-border-primary)}
+.ocard.bdanger{border:1.5px solid var(--color-border-danger)}
+.oheader{display:flex;align-items:center;gap:9px}
+.radio{width:17px;height:17px;border-radius:50%;border:2px solid var(--color-border-secondary);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.radio.on{border-color:var(--color-text-primary);background:var(--color-text-primary)}
+.radio.on::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--color-background-primary)}
+.rmeta{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.rprice{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.stk{font-size:12px;color:var(--color-text-secondary);text-decoration:line-through}
+.poff{font-size:12px;color:var(--color-text-success)}
+.badge{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:500;background:var(--color-background-success);color:var(--color-text-success)}
+.rsub{font-size:12px;color:var(--color-text-secondary);margin-top:3px;padding-left:26px}
+.nyp{display:flex;align-items:center;gap:9px}
+.nyl{font-size:13px;font-weight:500;color:var(--color-text-primary);white-space:nowrap}
+.piw{display:flex;align-items:center;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);overflow:hidden;flex:1}
+.piw.bdanger{border-color:var(--color-border-danger)}
+.psym{padding:0 7px;font-size:13px;color:var(--color-text-secondary)}
+.piw input{border:none;outline:none;background:transparent;font-size:13px;flex:1;width:50px;padding:7px 0;color:var(--color-text-primary)}
+.pcur{padding:0 8px;font-size:11px;color:var(--color-text-tertiary)}
+.ptag{font-size:11px;color:var(--color-text-secondary);padding-right:7px;white-space:nowrap}
+.errmsg{font-size:12px;color:var(--color-text-danger);padding-left:26px;margin-top:5px}
+.collapser{display:flex;justify-content:space-between;align-items:center;padding:11px 0;font-size:13px;font-weight:500;color:var(--color-text-primary);cursor:pointer;border-top:0.5px solid var(--color-border-tertiary)}
+.cta{display:block;width:100%;background:var(--color-text-primary);color:var(--color-background-primary);border:none;border-radius:var(--border-radius-md);padding:13px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;font-weight:500;margin-top:.875rem}
+.cta:disabled{background:var(--color-background-secondary);color:var(--color-text-tertiary);cursor:not-allowed}
+.fp{font-size:11px;color:var(--color-text-secondary);line-height:1.6;padding:10px 1.25rem 1.25rem}
+</style>
+
+<h2 class="sr-only">Suggest a price offer flow prototype v7 with APO, net price, and dynamic recommended price</h2>
+<div class="scene">
+  <div class="panel">
+
+    <h3>Seller settings</h3>
+
+    <div class="cg">
+      <label>List price ($)</label>
+      <div class="fi"><input type="number" id="listPrice" value="100" min="1" oninput="render()"/></div>
+    </div>
+
+    <div class="cg">
+      <label class="ck"><input type="checkbox" id="hasSale" onchange="render()"/><span>On sale</span></label>
+    </div>
+    <div id="saleGrp" style="display:none" class="indent">
+      <div class="cg" style="margin-top:8px">
+        <label>Sale price ($)</label>
+        <div class="fi">
+          <input type="number" id="salePrice" value="80" min="1" oninput="onField('sale')"/>
+          <div class="ferrmsg" id="saleErr" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cg">
+      <label class="ck"><input type="checkbox" id="hasNet" onchange="render()"/><span>Net price (Trade)</span></label>
+    </div>
+    <div id="netGrp" style="display:none" class="indent">
+      <div class="cg" style="margin-top:8px">
+        <label>Net price ($)</label>
+        <div class="fi">
+          <input type="number" id="netPrice" value="85" min="1" oninput="onField('net')"/>
+          <div class="ferrmsg" id="netErr" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cg">
+      <label class="ck"><input type="checkbox" id="hasMin" onchange="render()"/><span>Minimum offer</span></label>
+    </div>
+    <div id="minGrp" style="display:none" class="indent">
+      <div class="cg" style="margin-top:8px">
+        <label>Min offer (% off list)</label>
+        <div class="fi">
+          <input type="number" id="minPct" value="30" min="1" max="99" oninput="onField('min')"/>
+          <div class="ferrmsg" id="minErr" style="display:none"></div>
+        </div>
+        <div class="fhint" id="minDollar"></div>
+      </div>
+    </div>
+
+    <div class="cg">
+      <label class="ck"><input type="checkbox" id="hasAPO" onchange="render()"/><span>Automatic private offer (APO)</span></label>
+    </div>
+    <div id="apoGrp" style="display:none" class="indent">
+      <div class="cg" style="margin-top:8px">
+        <label>APO discount (% off list)</label>
+        <div class="fi">
+          <input type="number" id="apoPct" value="15" min="1" max="99" oninput="onField('apo')"/>
+          <div class="ferrmsg" id="apoErr" style="display:none"></div>
+        </div>
+        <div class="fhint" id="apoDollar"></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <h3>Platform — rec % (algo)</h3>
+    <div class="cg">
+      <div class="slider-row">
+        <input type="range" id="recPct" min="5" max="25" value="10" step="1" oninput="render()"/>
+        <span class="slider-val" id="recPctVal">10%</span>
+      </div>
+      <div class="fhint">5% = well priced · 25% = overpriced</div>
+    </div>
+
+    <div class="divider"></div>
+    <h3>Effective thresholds</h3>
+    <div class="info" id="platInfo"></div>
+
+    <div class="divider"></div>
+    <h3>Buyer input</h3>
+    <div class="cg">
+      <label>Buyer type</label>
+      <select id="buyerType" onchange="render()" style="width:100%;font-size:13px">
+        <option value="regular">Regular buyer</option>
+        <option value="trade">Trade buyer</option>
+      </select>
+    </div>
+    <div class="cg">
+      <label>Offer amount ($)</label>
+      <input type="number" id="buyerOffer" value="90" min="0" oninput="onOfferInput()"/>
+    </div>
+    <div class="cg">
+      <button onclick="simulateContinue()" style="width:100%;font-size:12px;padding:7px 0;cursor:pointer">Tap "Continue to shipping" →</button>
+    </div>
+    <div id="stateInfo"></div>
+
+  </div>
+
+  <div class="modal-wrap">
+    <div class="preview-lbl">Buyer view</div>
+    <div class="modal" id="modal"></div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let lastField=null, lowballFloor=null, submitted=false;
+
+function onField(f){ lastField=f; render(); }
+function onOfferInput(){ submitted=false; lowballFloor=null; render(); }
+
+function S(){
+  const list    = parseFloat($('listPrice').value)||100;
+  const hasSale = $('hasSale').checked;
+  const saleRaw = parseFloat($('salePrice').value)||list;
+  const sale    = hasSale && saleRaw<list ? saleRaw : null;
+  const hasNet  = $('hasNet').checked;
+  const netRaw  = parseFloat($('netPrice').value)||list;
+  const net     = hasNet && netRaw<list ? netRaw : null;
+  const hasMin  = $('hasMin').checked;
+  const minPct  = parseFloat($('minPct').value)||30;
+  const minDollar = hasMin ? Math.round(list*(1-minPct/100)) : null;
+  const hasAPO  = $('hasAPO').checked;
+  const apoPct  = parseFloat($('apoPct').value)||15;
+  const apoDollar = hasAPO ? Math.round(list*(1-apoPct/100)) : null;
+  const recPct  = parseInt($('recPct').value)||10;
+  const isTrade = $('buyerType').value==='trade';
+
+  // Active price = lowest applicable price for this buyer
+  let activePrice = list;
+  if(sale!==null) activePrice=Math.min(activePrice,sale);
+  if(isTrade&&net!==null) activePrice=Math.min(activePrice,net);
+
+  // Platform raw rec: recPct% off active, capped 5–25%
+  const clampedPct = Math.min(25,Math.max(5,recPct));
+  const platRecRaw = Math.round(activePrice*(1-clampedPct/100));
+
+  // Rec floor: if min offer set, rec must be ≥ minDollar + 5% of list (5% buffer)
+  const recFloor    = hasMin&&minDollar!==null ? Math.round(minDollar+list*0.05) : null;
+  const recPrice    = recFloor!==null ? Math.max(platRecRaw,recFloor) : platRecRaw;
+  const recFloored  = recFloor!==null && platRecRaw<recFloor;
+
+  // Lowball threshold: 40% off active price (only when no min offer)
+  const lowballThreshold = Math.round(activePrice*0.60);
+
+  const offer = parseFloat($('buyerOffer').value)||0;
+
+  // ── Seller validations ────────────────────────────────────────────────────
+  const gap20 = list*0.20;
+  const gap5  = list*0.05;
+
+  const saleTooHigh    = hasSale&&sale!==null&&sale>list*0.80;
+  const netOutOfRange  = hasNet&&net!==null&&(net>list*0.90||net<list*0.70);
+  const minTooHigh     = hasMin&&minPct<30;
+  const saleMinConflict= hasMin&&hasSale&&sale!==null&&minDollar!==null&&(sale-minDollar)<gap20;
+  const netMinConflict = hasMin&&hasNet&&net!==null&&minDollar!==null&&(net-minDollar)<gap20;
+  // APO must be ≥ minDollar + 5% of list if min offer set
+  const apoMinConflict = hasAPO&&hasMin&&apoDollar!==null&&minDollar!==null&&(apoDollar-minDollar)<gap5;
+
+  const hasSellerErr = saleTooHigh||netOutOfRange||minTooHigh||saleMinConflict||netMinConflict||apoMinConflict;
+
+  // ── Buyer validations ─────────────────────────────────────────────────────
+  const overList   = offer>0&&offer>list;
+  const overActive = offer>0&&offer>activePrice&&!overList;
+
+  let buyerState='ok';
+  if(overList||overActive){
+    buyerState='over';
+  } else if(offer>0){
+    if(hasMin&&minDollar!==null&&offer<minDollar){
+      buyerState='blocked';
+    } else if(!hasMin&&offer<lowballThreshold){
+      buyerState=submitted?'lowball':'presubmit';
+    }
+  }
+
+  const lowballBelowFloor=buyerState==='lowball'&&lowballFloor!==null&&offer<lowballFloor;
+
+  let overMsg='';
+  if(overList) overMsg=`Offer can't be higher than the list price ($${list})`;
+  else if(overActive){
+    const priceName=isTrade&&net&&net<=(sale||list)?'net':'sale';
+    overMsg=`Offer can't be higher than the ${priceName} price ($${activePrice})`;
+  }
+
+  return{list,sale,net,hasMin,hasNet,hasSale,hasAPO,minPct,minDollar,apoPct,apoDollar,
+         recPct:clampedPct,activePrice,platRecRaw,recPrice,recFloored,recFloor,
+         lowballThreshold,offer,buyerState,isTrade,
+         saleTooHigh,netOutOfRange,minTooHigh,saleMinConflict,netMinConflict,apoMinConflict,
+         hasSellerErr,gap20,gap5,lowballBelowFloor,overList,overActive,overMsg};
+}
+
+function simulateContinue(){
+  const s=S();
+  if(s.hasSellerErr||s.buyerState==='over') return;
+  if(s.buyerState==='presubmit'){ submitted=true; lowballFloor=s.offer; }
+  render();
+}
+
+function render(){
+  const s=S();
+  $('saleGrp').style.display=s.hasSale?'block':'none';
+  $('netGrp').style.display=s.hasNet?'block':'none';
+  $('minGrp').style.display=s.hasMin?'block':'none';
+  $('apoGrp').style.display=s.hasAPO?'block':'none';
+  $('recPctVal').textContent=s.recPct+'%';
+
+  // Clear errors
+  ['salePrice','netPrice','minPct','apoPct'].forEach(id=>$(id).classList.remove('ferr'));
+  ['saleErr','netErr','minErr','apoErr'].forEach(id=>{$(id).style.display='none';$(id).textContent='';});
+
+  if(s.saleTooHigh){
+    $('salePrice').classList.add('ferr');
+    $('saleErr').textContent=`Sale must be at least 20% off list. Max: $${Math.round(s.list*0.80)}.`;
+    $('saleErr').style.display='block';
+  }
+  if(s.netOutOfRange){
+    $('netPrice').classList.add('ferr');
+    $('netErr').textContent=`Net price must be 10–30% off list ($${Math.round(s.list*0.70)}–$${Math.round(s.list*0.90)}).`;
+    $('netErr').style.display='block';
+  }
+  if(s.minTooHigh){
+    $('minPct').classList.add('ferr');
+    $('minErr').textContent=`Minimum offer must be at least 30% off list. Max allowed: $${Math.round(s.list*0.70)}.`;
+    $('minErr').style.display='block';
+  }
+  if(!s.saleTooHigh&&s.saleMinConflict){
+    const msg=lastField==='sale'
+      ?`Sale price must be at least 20% above minimum offer ($${s.minDollar}). Raise sale to $${Math.round(s.minDollar+s.gap20)}+ or lower minimum offer.`
+      :`Minimum offer must be at least 20% below sale price ($${s.sale}). Lower minimum offer to $${Math.round(s.sale-s.gap20)} or below.`;
+    if(lastField==='sale'){$('salePrice').classList.add('ferr');$('saleErr').textContent=msg;$('saleErr').style.display='block';}
+    else{$('minPct').classList.add('ferr');$('minErr').textContent=msg;$('minErr').style.display='block';}
+  }
+  if(!s.netOutOfRange&&!s.minTooHigh&&s.netMinConflict){
+    const msg=lastField==='net'
+      ?`Net price must be at least 20% above minimum offer ($${s.minDollar}). Raise net to $${Math.round(s.minDollar+s.gap20)}+ or lower minimum offer.`
+      :`Minimum offer must be at least 20% below net price ($${s.net}). Lower minimum offer to $${Math.round(s.net-s.gap20)} or below.`;
+    if(lastField==='net'){$('netPrice').classList.add('ferr');$('netErr').textContent=msg;$('netErr').style.display='block';}
+    else{$('minPct').classList.add('ferr');$('minErr').textContent=msg;$('minErr').style.display='block';}
+  }
+  if(s.apoMinConflict){
+    const msg=lastField==='apo'
+      ?`APO must be at least 5% above minimum offer ($${s.minDollar}). Increase APO discount to $${Math.round(s.minDollar+s.gap5)} or lower minimum offer.`
+      :`Minimum offer must be at least 5% below APO ($${s.apoDollar}). Lower minimum offer to $${Math.round(s.apoDollar-s.gap5)} or below.`;
+    if(lastField==='apo'||lastField===null){$('apoPct').classList.add('ferr');$('apoErr').textContent=msg;$('apoErr').style.display='block';}
+    else{$('minPct').classList.add('ferr');$('minErr').textContent=msg;$('minErr').style.display='block';}
+  }
+
+  if(s.hasMin&&s.minDollar!==null) $('minDollar').textContent=`= $${s.minDollar}`;
+  if(s.hasAPO&&s.apoDollar!==null) $('apoDollar').textContent=`= $${s.apoDollar} sent to buyers who liked this item`;
+
+  // Thresholds panel
+  const basis=s.isTrade&&s.net&&s.net<=(s.sale||s.list)?'net':s.sale?'sale':'list';
+  let ph=`<strong>Active price:</strong> $${s.activePrice} (${basis})<br>`;
+  ph+=`<strong>Recommended:</strong> $${s.recPrice} (${s.recPct}% off active)`;
+  if(s.recFloored) ph+=` <span class="floored">↑ buffered above min offer</span>`;
+  ph+=`<br>`;
+  if(s.hasMin){
+    ph+=`<strong>Min offer:</strong> $${s.minDollar} — lowball nudge diffused<br>`;
+  } else {
+    ph+=`<strong>Lowball trigger:</strong> $${s.lowballThreshold} (40% off active)<br>`;
+  }
+  if(s.hasAPO) ph+=`<strong>APO:</strong> $${s.apoDollar} (${s.apoPct}% off list)`;
+  $('platInfo').innerHTML=ph;
+
+  const stMap={
+    ok:        ['stok','ti-circle-check','Within range'],
+    presubmit: ['stwarn','ti-clock','Below lowball — tap Continue'],
+    lowball:   ['stwarn','ti-alert-triangle','Lowball nudge shown'],
+    blocked:   ['sterr','ti-ban','Minimum offer block'],
+    over:      ['sterr','ti-arrow-up','Above price ceiling'],
+  };
+  const [cls,ico,lbl]=stMap[s.buyerState]||['stok','',''];
+  $('stateInfo').innerHTML=`<span class="stlbl ${cls}"><i class="ti ${ico}" aria-hidden="true"></i>${lbl}</span>`;
+
+  renderModal(s);
+}
+
+function renderModal(s){
+  const nyp=s.offer>0;
+  const nypPct=nyp?Math.round((1-s.offer/s.list)*100):null;
+  const isLowball=s.buyerState==='lowball';
+  const isBlocked=s.buyerState==='blocked';
+  const isOver=s.buyerState==='over';
+  const nypSelected=nyp&&(s.offer<s.recPrice||isOver||isBlocked);
+
+  const warnBanner=isLowball
+    ?`<div class="wbanner"><i class="ti ti-alert-circle" aria-hidden="true" style="flex-shrink:0;margin-top:1px"></i><span>Your offer is significantly below what this seller is likely to accept.</span></div>`:'';
+
+  const recPctOff=Math.round((1-s.recPrice/s.list)*100);
+  const recSub=isLowball?'Lowest offer likely to get a response':'Seller is likely to accept this offer';
+  const recBadge=isLowball?'Strongly recommended':'Recommended';
+  const recSel=!nypSelected;
+
+  const recCard=`
+    <div class="ocard ${recSel?'sel':''}" onclick="selectRec()">
+      <div class="oheader">
+        <div class="radio ${recSel?'on':''}"></div>
+        <div class="rmeta">
+          <span class="rprice">$${s.recPrice}</span>
+          <span class="stk">$${s.list}</span>
+          <span class="poff">${recPctOff}% off</span>
+          <span class="badge">${recBadge}</span>
+        </div>
+      </div>
+      <div class="rsub">${recSub}</div>
+    </div>`;
+
+  const nypLabel=isLowball?'Submit your offer':'Name your price';
+  const pctTag=nyp&&nypSelected&&!isOver?`<span class="ptag">${nypPct}% off</span>`:'';
+  const belowFloor=s.lowballBelowFloor;
+  const danger=isBlocked||belowFloor||isOver;
+
+  let errMsg='';
+  if(isOver)       errMsg=`<div class="errmsg">${s.overMsg}</div>`;
+  else if(isBlocked) errMsg=`<div class="errmsg">The seller doesn't accept offers this low</div>`;
+  else if(belowFloor) errMsg=`<div class="errmsg">You've already been advised this offer is low — you can't go lower</div>`;
+
+  const nypCard=`
+    <div class="ocard ${nypSelected?'sel':''} ${danger?'bdanger':''}" onclick="selectNYP()">
+      <div class="nyp">
+        <div class="radio ${nypSelected?'on':''}"></div>
+        <span class="nyl">${nypLabel}</span>
+        <div class="piw ${danger?'bdanger':''}">
+          <span class="psym">$</span>
+          <input type="number" id="inlineOffer" value="${nyp?s.offer:''}" oninput="onInlineInput(this.value)" placeholder=""/>
+          <span class="pcur">USD</span>
+          ${pctTag}
+        </div>
+      </div>
+      ${errMsg}
+    </div>`;
+
+  const ctaDisabled=(danger||s.hasSellerErr)?'disabled':'';
+  const title=isLowball?'Your offer is low':'Suggest a price';
+
+  const extraPrices=[]
+  if(s.sale) extraPrices.push(`<span>·</span><span>Sale:</span><span class="sp">$${s.sale}</span>`);
+  if(s.isTrade&&s.net) extraPrices.push(`<span>·</span><span>Net:</span><span class="sp">$${s.net}</span>`);
+
+  $('modal').innerHTML=`
+    <div class="mhead">
+      <h2>${title}</h2>
+      <button aria-label="Close"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div class="ubanner"><strong>Don't miss out!</strong> Someone is talking to the seller about this item.</div>
+    ${warnBanner}
+    <div class="mbody">
+      <div class="irow">
+        <div class="ithumb"><i class="ti ti-armchair" aria-hidden="true"></i></div>
+        <div>
+          <p class="iname">Charles &amp; Ray Eames Early LCW Lounge Chair, 1951</p>
+          <div class="pricerow">
+            <span>List:</span><span class="lp">$${s.list}</span>
+            ${extraPrices.join('')}
+          </div>
+        </div>
+      </div>
+      ${recCard}
+      ${nypCard}
+      <div class="collapser">Include a message <i class="ti ti-chevron-down" aria-hidden="true"></i></div>
+    </div>
+    <div style="padding:0 1.25rem">
+      <button class="cta" ${ctaDisabled}>Continue to shipping</button>
+    </div>
+    <p class="fp">You'll review all details in the final step before placing your offer, and only be charged if the seller accepts. The seller has 7 days to respond.</p>
+  `;
+}
+
+function selectRec(){ submitted=false; lowballFloor=null; $('buyerOffer').value=''; render(); }
+function selectNYP(){ const s=S(); if(!s.offer){$('buyerOffer').value=s.recPrice-2;} render(); }
+function onInlineInput(v){ $('buyerOffer').value=v; render(); }
+render();
+</script>
