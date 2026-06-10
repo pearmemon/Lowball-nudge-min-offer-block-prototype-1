@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Suggest a Price — Offer Flow Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="page">
+
+  <!-- LEFT: Controls -->
+  <aside class="controls">
+
+    <div class="controls-header">
+      <span class="controls-eyebrow">Prototype controls</span>
+      <h1 class="controls-title">Suggest a Price</h1>
+      <p class="controls-sub">Adjust seller settings and buyer input to explore all offer flow states.</p>
+    </div>
+
+    <section class="ctrl-section">
+      <h2 class="ctrl-section-title">Seller settings</h2>
+
+      <div class="field-group">
+        <label class="field-label" for="listPrice">List price ($)</label>
+        <input class="field-input" type="number" id="listPrice" value="100" min="1" oninput="render()" />
+      </div>
+
+      <div class="field-group">
+        <label class="toggle-label">
+          <input type="checkbox" id="hasSale" onchange="render()" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span>Item is on sale</span>
+        </label>
+      </div>
+
+      <div class="field-group indent" id="saleGrp" style="display:none">
+        <label class="field-label" for="salePrice">Sale price ($)</label>
+        <div class="input-wrap">
+          <input class="field-input" type="number" id="salePrice" value="85" min="1" oninput="onSaleInput()" />
+        </div>
+        <p class="field-err" id="saleErr" style="display:none"></p>
+        <p class="field-warn" id="saleWarn" style="display:none"></p>
+      </div>
+
+      <div class="field-group">
+        <label class="toggle-label">
+          <input type="checkbox" id="hasMin" onchange="render()" />
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span>Minimum offer set</span>
+        </label>
+      </div>
+
+      <div class="field-group indent" id="minGrp" style="display:none">
+        <label class="field-label" for="minPct">Min offer (% off list)</label>
+        <div class="input-wrap">
+          <input class="field-input" type="number" id="minPct" value="40" min="1" max="99" oninput="onMinInput()" />
+          <span class="input-suffix">% off</span>
+        </div>
+        <p class="field-hint" id="minDollar"></p>
+        <p class="field-err" id="minErr" style="display:none"></p>
+      </div>
+    </section>
+
+    <section class="ctrl-section">
+      <h2 class="ctrl-section-title">Effective thresholds</h2>
+      <div class="threshold-grid" id="platInfo"></div>
+    </section>
+
+    <section class="ctrl-section">
+      <h2 class="ctrl-section-title">Buyer input</h2>
+
+      <div class="field-group">
+        <label class="field-label" for="buyerOffer">Offer amount ($)</label>
+        <input class="field-input" type="number" id="buyerOffer" value="90" min="0" oninput="onOfferInput()" />
+      </div>
+
+      <button class="continue-trigger" onclick="simulateContinue()">
+        Tap "Continue to Shipping" <i class="ti ti-arrow-right"></i>
+      </button>
+
+      <div id="stateInfo" style="margin-top:12px"></div>
+    </section>
+
+    <section class="ctrl-section legend">
+      <h2 class="ctrl-section-title">States</h2>
+      <div class="legend-item"><span class="dot green"></span> Within recommended range</div>
+      <div class="legend-item"><span class="dot yellow"></span> Below nudge — awaiting Continue</div>
+      <div class="legend-item"><span class="dot yellow"></span> Lowball nudge shown</div>
+      <div class="legend-item"><span class="dot red"></span> Min offer block</div>
+      <div class="legend-item"><span class="dot red"></span> Above price ceiling</div>
+    </section>
+
+  </aside>
+
+  <!-- RIGHT: Modal preview -->
+  <main class="preview">
+    <div class="preview-label">Buyer view</div>
+    <div class="modal-shell">
+      <div class="modal" id="modal"></div>
+    </div>
+  </main>
+
+</div>
+
+<script src="logic.js"></script>
+</body>
+</html>
